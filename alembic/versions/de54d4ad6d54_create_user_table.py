@@ -44,5 +44,6 @@ users_data = [
     {"email": "cammy@gmail.com", "password": "cammy123"},
     {"email": "guile@gmail.com", "password": "guile123"},
     {"email": "finn@gmail.com", "password": "finn123"},
+    {"email": "ernur@gmail.com", "password": "$2b$12$EFKmZkoclnpT.SSoAgX6d.G3XIWXc4IOReVL6wgyMI8LgBCWpAOWG"}
 ]
 
