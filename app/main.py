@@ -4,7 +4,10 @@ from .database import engine
 from .routers import post, user, auth, vote
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+description = 'API based on FastAPI'
+
+app = FastAPI(title='Simple Social app API',
+              description=description)
 origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
