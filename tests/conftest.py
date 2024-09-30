@@ -6,6 +6,7 @@ from app.database import get_db
 from app.main import app
 from fastapi.testclient import TestClient 
 import pytest
+from app.oauth2 import create_access_token
 
 
 engine = create_engine(settings.sqlalchemy_database_url + '_test')
@@ -41,3 +42,26 @@ def client(session):
             session.close()
     app.dependency_overrides[get_db] = override_get_db
     yield TestClient(app)
+
+@pytest.fixture
+def test_user(client):
+    # as far as I remember client is the fixture that deletes database and created whenever it passed to test_function
+    user_data = {"email": "test_user@gmail.com", "password": "12345678"}
+    res = client.post("/users/", json=user_data)
+    assert res.status_code == 201
+    new_user = res.json()
+    new_user["password"] = user_data["password"]
+    return new_user
+
+
+@pytest.fixture()
+def token(test_user):
+    return create_access_token({"user_id": test_user['id']})
+
+@pytest.fixture()
+def authorized_client(client, token):
+    client.headers = {
+        **client.headers,
+        "Authorization": f"Bearer {token}"
+    }
+    return client

@@ -1,5 +1,3 @@
-from .database import client, session
-
 def test_root(client):
     res = client.get("/")
     print(res.json())
