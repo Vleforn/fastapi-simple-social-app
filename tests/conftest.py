@@ -7,7 +7,7 @@ from app.main import app
 from fastapi.testclient import TestClient 
 import pytest
 from app.oauth2 import create_access_token
-
+from app import models
 
 engine = create_engine(settings.sqlalchemy_database_url + '_test')
 
@@ -65,3 +65,25 @@ def authorized_client(client, token):
         "Authorization": f"Bearer {token}"
     }
     return client
+
+@pytest.fixture
+def test_posts(test_user, session):
+    posts_data = [{
+        "title": "first title",
+        "content": "first content",
+        "user_id": test_user['id']
+    }, {
+        "title": "2nd title",
+        "content": "2nd content",
+        "user_id": test_user['id']
+    }, {
+        "title": "3rd title",
+        "content": "34d content",
+        "user_id": test_user['id']
+    }]
+    posts = list(map(lambda a: models.Posts(**a), posts_data))
+    session.add_all(posts)
+    session.commit()
+
+    posts = session.query(models.Posts).all()
+    return posts
