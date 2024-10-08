@@ -4,6 +4,13 @@ on: [push, pull_request]
 
 jobs:
   job1:
+    environment:
+      name: testing
+    env:
+      SQLALCHEMY_DATABASE_URL: ${{secrets.SQLALCHEMY_DATABASE_URL}}
+      SECRET_KEY: ${{SECRET_KEY}}
+      ALGORITHM: ${{ALGORITHM}}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${{ACCESS_TOKEN_EXPIRE_MINUTES}}
     runs-on: ubuntu-latest
     steps:
       - name: pulling git repo
